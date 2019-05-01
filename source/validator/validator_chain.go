@@ -23,6 +23,8 @@ func (h *configMapTestHandler) Request(req i.RequestJSON) i.ResponseJSON {
         }
     }
 
+    uid := req["request"].(map[string]interface{})["uid"]
+	
     var res = i.ResponseJSON{
 		"response": i.ResponseJSON{
 			"status": i.ResponseJSON{
@@ -30,6 +32,8 @@ func (h *configMapTestHandler) Request(req i.RequestJSON) i.ResponseJSON {
 		},
 	}
 
+    res["response"].(i.ResponseJSON)["uid"] = uid
+	
     if ( h.validate(req) ) {
         res["response"].(i.ResponseJSON)["allowed"] = true
         res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["status"] = "Success"
@@ -64,7 +68,9 @@ func (h *defaultBehaviourHandler) Request(req i.RequestJSON) i.ResponseJSON {
 			},
 		},
 	}
-
+    uid := req["request"].(map[string]interface{})["uid"]
+	
+    res["response"].(i.ResponseJSON)["uid"] = uid	
     res["response"].(i.ResponseJSON)["allowed"] = false
     res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["status"] = "Failure"
     res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["message"] = "Resource is not recognized"
