@@ -1,0 +1,36 @@
+node('cd-jenkins-slave') {
+    stage('PREPARE') {
+    	container('jnlp') {
+            sh """
+                mkdir -p pkg bin src/${env.JOB_NAME}
+            """
+        }
+    }
+    stage('CHECKOUT') {
+    	container('jnlp') {
+    	    dir("src/${env.JOB_NAME}") {
+                def scmVars = checkout scm
+                sh 'echo `git describe --abbrev=0 --tags`>> ../../bin/version.txt'
+    	    }
+        }
+    }
+    stage('COMPILE') {
+    	container('golang') {
+            sh """                       
+                export GOPATH=`pwd`                        
+                cd src/${env.JOB_NAME}
+		    	go get -v -d ./...
+		    	cd \$GOPATH
+    	   		CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go install -v -a -tags netgo -ldflags '-extldflags "-static"' ${env.JOB_NAME} 
+		    	cp src/${env.JOB_NAME}/build/* bin/
+		    """
+        }
+    }
+    stage('BUILD DOCKER') {
+        container('docker') {
+            dir("bin") {
+                sh "docker build -t ${env.JOB_NAME} . "
+            }
+        }
+    }
+}   

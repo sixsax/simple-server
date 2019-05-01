@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-example-error
+  namespace: kube-system
+  labels:
+    app: simple-server
+data:
+  #key with typo
+  test_typo: "test"

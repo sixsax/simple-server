@@ -1,0 +1,16 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: validation-webhook
+webhooks:
+  - name: simple-server.svc.cluster.local
+    clientConfig:
+      #webhook
+      url: https://simple-server.svc.cluster.local/validate
+      #Base64 CA 
+      caBundle: LS..0t
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["configmaps"]
