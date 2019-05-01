@@ -40,8 +40,8 @@ func (h *configMapTestHandler) Request(req i.RequestJSON) i.ResponseJSON {
     }else{
         res["response"].(i.ResponseJSON)["allowed"] = false
         res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["status"] = "Failure"
-        res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["message"] = "ConfigMap not valid!"
-        res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["reason"] = "ConfigMap not valid!"
+        res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["message"] = "ConfigMap has not been validated!"
+        res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["reason"] = "ConfigMap has not been validated!"
     }
 
     return res
@@ -73,8 +73,8 @@ func (h *defaultBehaviourHandler) Request(req i.RequestJSON) i.ResponseJSON {
     res["response"].(i.ResponseJSON)["uid"] = uid	
     res["response"].(i.ResponseJSON)["allowed"] = false
     res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["status"] = "Failure"
-    res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["message"] = "Resource is not recognized"
-    res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["reason"] = "Resource is not recognized"
+    res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["message"] = "Resource has not been recognized"
+    res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["reason"] = "Resource has not been recognized"
 
     return res
 }
@@ -93,8 +93,7 @@ func New(req i.RequestJSON) (*chain, error){
 	})
 
     ec := &configMapTestHandler{new(defaultBehaviourHandler)}
-    //ec := &defaultBehaviourHandler{nil}
-	c := chain{req,ec}
+    c := chain{req,ec}
     return &c, nil
 }
 
