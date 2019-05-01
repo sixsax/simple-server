@@ -30,7 +30,7 @@ func (h *configMapTestHandler) Request(req i.RequestJSON) i.ResponseJSON {
 		},
 	}
 
-    if ( h.analyze(req) ) {
+    if ( h.validate(req) ) {
         res["response"].(i.ResponseJSON)["allowed"] = true
         res["response"].(i.ResponseJSON)["status"].(i.ResponseJSON)["status"] = "Success"
     }else{
@@ -44,7 +44,7 @@ func (h *configMapTestHandler) Request(req i.RequestJSON) i.ResponseJSON {
 }
 
 //Test the resource
-func (h *configMapTestHandler) analyze(req i.RequestJSON) bool {
+func (h *configMapTestHandler) validate(req i.RequestJSON) bool {
     _, ok := req["request"].(map[string]interface{})["object"].(map[string]interface{})["data"].(map[string]interface{})["test"]
     return ok
 }
